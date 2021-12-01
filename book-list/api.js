@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-async function Subjects() {
+async function getSubjects() {
     const { data: subjects } = await axios.get('http://localhost:3010/subjects');
 
     return subjects;
 }
 
-async function BooksBySubject(subject) {
+async function getBooksBySubject(subject) {
     const { data: books } = await axios.get(`http://localhost:3010/books?subjects_like=${subject}`);
 
     return books;
@@ -18,4 +18,4 @@ async function saveBook(book) {
     return updatedBook;
 }
 
-export { Subjects, BooksBySubject, saveBook };
+export { getSubjects, getBooksBySubject, saveBook };

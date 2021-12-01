@@ -6,14 +6,13 @@
         <label class="main-label"
           v-for="subject in subjects"
           :key="subject"
-          @change="BooksBySubject"
+          @change="getBooksBySubject"
         >
           <span>{{subject}}</span>
           <input class="main-input" type="radio" :value="subject" v-model="chosenSubject">
         </label>
       </div>
       <div class="book-list">
-        <hr v-if=chosenSubject >
         <h3 v-if=chosenSubject>You Need to Choose Book</h3>
         <label class="main-label"
           v-for="book in books"
@@ -24,7 +23,7 @@
         </label>
       </div>
       <div class="book">
-        <hr v-if=chosenBook>
+        <h3 v-if=chosenBook>Book Description</h3>
         <Book
           v-if=chosenBook
           :book=chosenBook
@@ -37,8 +36,9 @@
 </template>
 
 <script>
+import Vue from "vue";
 import Book from '@/components/Book.vue';
-import  { Subjects, BooksBySubject } from '/api';
+import  { getSubjects, getBooksBySubject } from '/api';
 export default {
   components: {
     Book,
@@ -52,26 +52,37 @@ export default {
     };
   },
   async created() {
-    this.subjects = await Subjects();
+    this.subjects = await getSubjects();
   },
   methods: {
-    async BooksBySubject() {
+    async getBooksBySubject() {
       this.chosenBook = null;
-      this.books = await BooksBySubject(this.chosenSubject);
+      this.books = await getBooksBySubject(this.chosenSubject);
     },
     updateBookList(updatedBook) {
       const index = this.books.findIndex(book => book.id === updatedBook.id);
-      this.books[index] = updatedBook;
+      Vue.set(this.books, index, updatedBook);
     },
   },
 };
 </script>
 
 <style>
-.main-label {
+.main-block{
   display: flex;
-  align-items: center;
-
+  position: relative;
+  margin: 30px;
+}
+.subject-list{
+  justify-content: flex-start;
+}
+.book-list{
+  margin-left: 15px;
+  margin-right: 15px;
+  width: 400px;
+}
+.main-label {
+  display: block;
   border-radius: 100px;
   border: 2px solid hsla(0, 0%, 30%, .14);
   padding: 14px 16px;
@@ -80,7 +91,6 @@ export default {
   cursor: pointer;
   transition: .3s;
 }
-
 .main-label:hover,
 .main-label:focus-within {
   background: hsla(0, 0%, 30%, .14);
