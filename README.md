@@ -1,6 +1,6 @@
 # book-list
 
-## Project setup
+## Project setup (in book-list) 
 ```
 yarn install
 ```
@@ -22,3 +22,12 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## API setup
+```
+npm install
+```
+### API start
+```
+npm start
+```
